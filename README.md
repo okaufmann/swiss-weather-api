@@ -1,7 +1,7 @@
 Wetterdaten API Schweiz
 ====================
 
-**ACHTUNG**: Die Verwendung der Daten auf der Webseite http://www.meteoschweiz.admin.ch sind rechtlich geschützt! Sie dürfen nicht verbreitet werden und nur für den Eigengebrauch verwendet werden.
+**ACHTUNG**: Die Verwendung der Daten auf der Webseite http://www.meteoschweiz.admin.ch sind rechtlich geschützt! Sie dürfen nicht verbreitet werden und nur für den Eigengebrauch verwendet werden. Die entsprechenden Passagen wurden markiert.
 
 Auszug vom 07.06.2017 der Seite http://www.meteoschweiz.admin.ch/home/ueber-uns/kontakt/rechtliches.html.
 
