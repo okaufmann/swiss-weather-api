@@ -7,12 +7,12 @@ Auszug vom 07.06.2017 der Seite http://www.meteoschweiz.admin.ch/home/ueber-uns/
 
 ## Copyright & Nutzungsrechte
 
-Copyright, Bundesamt für Meteorologie und Klimatologie MeteoSchweiz.
+>Copyright, Bundesamt für Meteorologie und Klimatologie MeteoSchweiz.
 
-Die auf den online-Medien (Website/APP) der MeteoSchweiz enthaltenen Informationen werden der Öffentlichkeit zugänglich gemacht. Die Dienstleistungen von MeteoSchweiz dürfen - mit Ausnahme der kleinen Warnkarte - _**nur für den Eigengebrauch genutzt werden, jegliche Weitergabe der Dienstleistungen an Dritte ist unzulässig**_. Durch das Herunterladen oder Kopieren von Inhalten, Bildern, Fotos oder anderen Dateien werden keinerlei Rechte bezüglich der Inhalte übertragen.
+>Die auf den online-Medien (Website/APP) der MeteoSchweiz enthaltenen Informationen werden der Öffentlichkeit zugänglich gemacht. Die Dienstleistungen von MeteoSchweiz dürfen - mit Ausnahme der kleinen Warnkarte - _**nur für den Eigengebrauch genutzt werden, jegliche Weitergabe der Dienstleistungen an Dritte ist unzulässig**_. Durch das Herunterladen oder Kopieren von Inhalten, Bildern, Fotos oder anderen Dateien werden keinerlei Rechte bezüglich der Inhalte übertragen.>
 
-Die Urheber- und alle anderen Rechte an Inhalten, Bildern, Fotos oder anderen Dateien auf den online-Medien (Website/APP) der MeteoSchweiz gehören ausschliesslich dieser oder den speziell genannten Rechtsinhabern. Für die Reproduktion jeglicher Elemente ist die schriftliche Zustimmung der Urheberrechtsträger im voraus einzuholen.
-Es ist nicht erlaubt, Dienstleistungen der MeteoSchweiz online-Medien (Website/APP) in einer Form zu nutzen, die die MeteoSchweiz-IT-Infrastruktur beeinträchtigen, überlasten oder schädigen könnte oder andere Nutzer beim Besuch der MeteoSchweiz-online-Medien (Website/APP) behindert. _**Insbesondere ist es ausdrücklich verboten, Daten der MeteoSchweiz-Website per Webroboter oder anderen automatisierten Verfahren vom Web-Server herunter zu laden und/oder weiter zu verarbeiten.**_
+>Die Urheber- und alle anderen Rechte an Inhalten, Bildern, Fotos oder anderen Dateien auf den online-Medien (Website/APP) der MeteoSchweiz gehören ausschliesslich dieser oder den speziell genannten Rechtsinhabern. Für die Reproduktion jeglicher Elemente ist die schriftliche Zustimmung der Urheberrechtsträger im voraus einzuholen.
+>Es ist nicht erlaubt, Dienstleistungen der MeteoSchweiz online-Medien (Website/APP) in einer Form zu nutzen, die die MeteoSchweiz-IT-Infrastruktur beeinträchtigen, überlasten oder schädigen könnte oder andere Nutzer beim Besuch der MeteoSchweiz-online-Medien (Website/APP) behindert. _**Insbesondere ist es ausdrücklich verboten, Daten der MeteoSchweiz-Website per Webroboter oder anderen automatisierten Verfahren vom Web-Server herunter zu laden und/oder weiter zu verarbeiten.**_
 
 ## Version
 Für jeden der Untenstehenden Parameter gibt es jeweils einen aktuellen Stand der Daten,
