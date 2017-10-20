@@ -31,7 +31,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Okaufmann\\SwissMeteoApi\\Tests": "tests"
+            "Okaufmann\\SwissMeteoApi\\Tests\\": "tests"
         }
     },
     "scripts": {
