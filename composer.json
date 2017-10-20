@@ -47,7 +47,7 @@
             "providers": [
                 "Okaufmann\\SwissMeteoApi\\SwissMeteoApiServiceProvider"
             ]
-        },
+        }
     },
     "config": {
         "sort-packages": true
