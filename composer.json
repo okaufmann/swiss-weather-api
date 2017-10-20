@@ -1,5 +1,5 @@
 {
-    "name": "Okaufmann/SwissMeteoApi",
+    "name": "okaufmann/swiss-weather-api",
     "type": "library",
     "description": "API Client for http://www.meteoschweiz.admin.ch",
     "keywords": [
