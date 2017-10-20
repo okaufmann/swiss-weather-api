@@ -42,7 +42,12 @@
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
-        }
+        },
+        "laravel": {
+            "providers": [
+                "Okaufmann\\SwissMeteoApi\\SwissMeteoApiServiceProvider"
+            ]
+        },
     },
     "config": {
         "sort-packages": true
