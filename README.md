@@ -9,6 +9,8 @@
 
 API Client for http://www.meteoschweiz.admin.ch
 
+**THIS IS FOR PERSONAL USE ONLY! PLEASE READ IMPRESSUM UNDER http://www.meteoswiss.admin.ch/home/about-us/impressum.html**
+
 ## Install
 
 Via Composer
