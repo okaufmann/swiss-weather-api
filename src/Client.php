@@ -563,22 +563,31 @@ class Client
      */
     private function formatData($stationId, $station)
     {
+        $parameters = [];
+        foreach ($station['series'] as $parameter) {
+            $parameters[] = [
+                'label' => $parameter['name'],
+                'value_suffix' => $station['chart_options']['value_suffix'],
+                'data' => collect($parameter['data'])
+                    ->map(function ($dataItem) {
+                        $timestamp = floatval($dataItem[0]) / 1000;
+                        return [
+                            'date' => Carbon::createFromTimestamp($timestamp),
+                            'value' => $dataItem[1]
+                        ];
+                    })
+                    ->toArray(),
+            ];
+        }
+
         $data = [
             'meta' => [
-                'label' => $station['series'][0]['name'],
                 'value_suffix' => $station['chart_options']['value_suffix'],
                 'timestamp' => Carbon::createFromTimestamp($station['config']['timestamp']),
                 'language' => $station['config']['language'],
                 'station' => $stationId
             ],
-            'data' => collect($station['series'][0]['data'])
-                ->map(function ($dataItem) {
-                    $timestamp = floatval($dataItem[0]) / 1000;
-                    return [
-                        'date' => Carbon::createFromTimestamp($timestamp),
-                        'value' => $dataItem[1]
-                    ];
-                }),
+            'parameters' => $parameters
         ];
         return $data;
     }
