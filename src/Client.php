@@ -570,9 +570,8 @@ class Client
                 'value_suffix' => $station['chart_options']['value_suffix'],
                 'data' => collect($parameter['data'])
                     ->map(function ($dataItem) {
-                        $timestamp = floatval($dataItem[0]) / 1000;
                         return [
-                            'date' => Carbon::createFromTimestamp($timestamp),
+                            'date' => $this->getUtcDate($dataItem[0]),
                             'value' => $dataItem[1]
                         ];
                     })
@@ -583,12 +582,22 @@ class Client
         $data = [
             'meta' => [
                 'value_suffix' => $station['chart_options']['value_suffix'],
-                'timestamp' => Carbon::createFromTimestamp($station['config']['timestamp']),
+                'timestamp' => $this->getUtcDate($station['config']['timestamp']),
                 'language' => $station['config']['language'],
                 'station' => $stationId
             ],
             'parameters' => $parameters
         ];
+
         return $data;
+    }
+
+    private function getUtcDate($timestamp)
+    {
+        $timestamp = floatval($timestamp / 1000);
+        $date = Carbon::createFromTimestamp($timestamp, 'Europe/Zurich');
+        $date->setTimezone('UTC');
+
+        return $date;
     }
 }
