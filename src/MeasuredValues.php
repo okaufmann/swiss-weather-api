@@ -202,7 +202,7 @@ trait MeasuredValues
     /**
      * Fetches all version tags from frontend html page to access api endpoints
      */
-    public function getParametersAndVersions()
+    private function getParametersAndVersions()
     {
         if (!$this->parameterVersionsMeasuredValues) {
 
