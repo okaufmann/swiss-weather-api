@@ -67,13 +67,14 @@ class Client extends ClientAbstract
 
     private function getUtcDate($timestamp)
     {
-
         if (!$timestamp || $timestamp == 0) {
             throw new \Exception('Invalid timestamp provided: '.$timestamp);
         }
 
         try {
-            $timestamp = doubleval($timestamp) / 1000;
+            if (strlen($timestamp) == 13) {
+                $timestamp = doubleval($timestamp) / 1000;
+            }
             $date = Carbon::createFromTimestamp($timestamp, 'Europe/Zurich');
             $date->setTimezone('UTC');
         } catch (\Exception $ex) {
