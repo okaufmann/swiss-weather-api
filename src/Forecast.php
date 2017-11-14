@@ -62,11 +62,7 @@ trait Forecast
     {
         $url = 'product/output/forecast-chart/'.$version.'/'.$lang.'/'.$postalCode.'.json';
 
-        $forecastData = cache('forecast-data-'.$postalCode, function () use ($lang, $url) {
-            $response = $this->client->get($url);
-            $html = (string)$response->getBody();
-            return json_decode($html, true);
-        });
+        $forecastData = $this->makeRequest($url, true);
 
         return $forecastData;
     }
@@ -127,29 +123,24 @@ trait Forecast
     private function getParametersAndVersionsForecast()
     {
 
-        $parameterVersion = cache('parameters-forecast', function () {
+        $url = 'home.html';
+        $html = $this->makeRequest($url);
 
-            $url = 'home.html';
-            $response = $this->client->get($url);
-            $html = (string)$response->getBody();
+        // http://www.meteoswiss.admin.ch/product/output/forecast-chart/version__20171112_1532/en/380000.json
+        $regex = '/product\/output\/forecast-chart\/(version__[0-9]{6,8}_[0-9]{2,4})\/(de)/';
+        $matches = Regex::matchAll($regex, $html);
 
-            // http://www.meteoswiss.admin.ch/product/output/forecast-chart/version__20171112_1532/en/380000.json
-            $regex = '/product\/output\/forecast-chart\/(version__[0-9]{6,8}_[0-9]{2,4})\/(de)/';
-            $matches = Regex::matchAll($regex, $html);
+        if (!$matches->hasMatch()) {
+            throw new \Exception('current version segment could\'nt be found!');
+        }
 
-            if (!$matches->hasMatch()) {
-                throw new \Exception('current version segment could\'nt be found!');
-            }
+        /** @var MatchResult $match */
+        $match = array_first($matches->results());
 
-            /** @var MatchResult $match */
-            $match = array_first($matches->results());
-
-            return [
-                'version' => $match->group(1),
-                'lang' => $match->group(2)
-            ];
-        });
-
+        $parameterVersion = [
+            'version' => $match->group(1),
+            'lang' => $match->group(2)
+        ];
 
         return $parameterVersion;
     }

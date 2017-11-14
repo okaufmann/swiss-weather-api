@@ -188,11 +188,7 @@ trait MeasuredValues
         $version = $this->getParameterVersion($parameterName);
         $url = 'product/output/measured-values-v2/'.$parameterName.'/'.$version.'/'.$lang.'/overview.json';
 
-        $stations = cache('stations.'.$parameterName, function () use ($lang, $url) {
-            $response = $this->client->get($url);
-            $html = (string)$response->getBody();
-            return json_decode($html, true);
-        });
+        $stations = $this->makeRequest($url, true);
 
         return $stations['stations'];
     }
@@ -202,29 +198,26 @@ trait MeasuredValues
      */
     private function getParametersAndVersions()
     {
+
         if (!$this->parameterVersionsMeasuredValues) {
 
-            $parameterVersions = cache('parameters', function () {
+            $url = 'home/wetter/messwerte/messwerte-an-stationen.html';
+            $html = $this->makeRequest($url);
 
-                $url = 'home/wetter/messwerte/messwerte-an-stationen.html';
-                $response = $this->client->get($url);
-                $html = (string)$response->getBody();
+            $regex = '/product\/output\/measured-values-v2\/([a-z-]*)\/(version__[0-9]{6,8}_[0-9]{2,4})\/(de)/';
+            $matches = Regex::matchAll($regex, $html);
 
-                $regex = '/product\/output\/measured-values-v2\/([a-z-]*)\/(version__[0-9]{6,8}_[0-9]{2,4})\/(de)/';
-                $matches = Regex::matchAll($regex, $html);
+            $versions = collect($matches->results())
+                ->map(function (MatchResult $match) {
+                    return [
+                        'parameter-name' => $match->group(1),
+                        'version' => $match->group(2),
+                        'lang' => $match->group(3)
+                    ];
+                })
+                ->unique('parameter-name');
 
-                $versions = collect($matches->results())
-                    ->map(function (MatchResult $match) {
-                        return [
-                            'parameter-name' => $match->group(1),
-                            'version' => $match->group(2),
-                            'lang' => $match->group(3)
-                        ];
-                    })
-                    ->unique('parameter-name');
-
-                return $versions;
-            });
+            $parameterVersions = $versions;
 
             $this->parameterVersionsMeasuredValues = collect($parameterVersions);
         }
@@ -255,11 +248,7 @@ trait MeasuredValues
     {
         $url = 'product/output/measured-values-v2/'.$parameterName.'/'.$version.'/'.$lang.'/'.$stationId.'.json';
 
-        $station = cache('station.'.$parameterName, function () use ($lang, $url) {
-            $response = $this->client->get($url);
-            $html = (string)$response->getBody();
-            return json_decode($html, true);
-        });
+        $station = $this->makeRequest($url, true);
 
         $data = $this->formatData($stationId, $station);
 

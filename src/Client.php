@@ -12,7 +12,12 @@ namespace Okaufmann\SwissMeteoApi;
 
 use Carbon\Carbon;
 use GuzzleHttp\Client as Http;
+use GuzzleHttp\HandlerStack;
+use Kevinrob\GuzzleCache\CacheMiddleware;
+use Kevinrob\GuzzleCache\Storage\LaravelCacheStorage;
+use Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy;
 use Log;
+use Cache;
 
 class Client extends ClientAbstract
 {
@@ -26,13 +31,39 @@ class Client extends ClientAbstract
 
     private function setupClient()
     {
+        // Create default HandlerStack
+        $stack = HandlerStack::create();
+
+        $stack->push(
+            new CacheMiddleware(
+                new PrivateCacheStrategy(
+                    new LaravelCacheStorage(
+                        Cache::store('file')
+                    )
+                )
+            ),
+            'weather-cache'
+        );
+
         $client = new Http([
+            'handler' => $stack,
             'base_uri' => 'http://www.meteoschweiz.admin.ch/'
         ]);
 
         $this->client = $client;
     }
 
+    private function makeRequest($url, $decodeJson = false)
+    {
+        $response = $this->client->get($url);
+        $html = (string)$response->getBody();
+
+        if ($decodeJson) {
+            return json_decode($html, true);
+        }
+
+        return $html;
+    }
 
     private function getUtcDate($timestamp)
     {
