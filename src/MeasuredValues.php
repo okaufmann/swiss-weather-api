@@ -198,7 +198,6 @@ trait MeasuredValues
      */
     private function getParametersAndVersions()
     {
-
         if (!$this->parameterVersionsMeasuredValues) {
 
             $url = 'home/wetter/messwerte/messwerte-an-stationen.html';
@@ -250,7 +249,12 @@ trait MeasuredValues
 
         $station = $this->makeRequest($url, true);
 
-        $data = $this->formatData($stationId, $station);
+        $stationsMetadata = $this->getStationsByParameter($parameterName);
+        $stationMetadata = collect($stationsMetadata)->first(function ($stationMetadata) use ($stationId) {
+            return $stationMetadata['id'] == $stationId;
+        });
+
+        $data = $this->formatData($stationId, $station, $stationMetadata);
 
         return $data;
     }
@@ -260,7 +264,7 @@ trait MeasuredValues
      * @param $station
      * @return array
      */
-    private function formatData($stationId, $station)
+    private function formatData($stationId, $station, $stationMetadata)
     {
         $parameters = [];
         foreach ($station['series'] as $parameter) {
@@ -278,12 +282,34 @@ trait MeasuredValues
             ];
         }
 
+        // $stationMetadata = [▼
+        //   "id" => "INT"
+        //   "coord_x" => 633019
+        //   "coord_y" => 169093
+        //   "city_name" => "Interlaken"
+        //   "min_zoom" => 4
+        //   "current_value" => -0.9
+        //   "value_suffix" => "°C"
+        //   "evelation" => 577
+        //   "date" => 1510690800000.0
+        // ]
+
+        $x = $stationMetadata['coord_x'];
+        $y = $stationMetadata['coord_y'];
+
+        $latitude = CoordinateConverter::CHtoWGSlat($x, $y);
+        $longitude = CoordinateConverter::CHtoWGSlong($x, $y);
+
         $data = [
             'meta' => [
                 'value_suffix' => $station['chart_options']['value_suffix'],
                 'timestamp' => $this->getUtcDate($station['config']['timestamp']),
                 'language' => $station['config']['language'],
-                'station' => $stationId
+                'station' => $stationId,
+                'city_name' => $stationMetadata['city_name'],
+                'evelation' => $stationMetadata['evelation'],
+                'latitude' => $latitude,
+                'longitude' => $longitude
             ],
             'parameters' => $parameters
         ];
