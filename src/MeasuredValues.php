@@ -10,8 +10,6 @@
 
 namespace Okaufmann\SwissMeteoApi;
 
-use Carbon\Carbon;
-use GuzzleHttp\Client as Http;
 use Spatie\Regex\MatchResult;
 use Spatie\Regex\Regex;
 
@@ -264,6 +262,42 @@ trait MeasuredValues
         });
 
         $data = $this->formatData($stationId, $station);
+
+        return $data;
+    }
+
+    /**
+     * @param $stationId
+     * @param $station
+     * @return array
+     */
+    private function formatData($stationId, $station)
+    {
+        $parameters = [];
+        foreach ($station['series'] as $parameter) {
+            $parameters[] = [
+                'label' => $parameter['name'],
+                'value_suffix' => $station['chart_options']['value_suffix'],
+                'data' => collect($parameter['data'])
+                    ->map(function ($dataItem) {
+                        return [
+                            'datetime' => $this->getUtcDate($dataItem[0]),
+                            'value' => $dataItem[1]
+                        ];
+                    })
+                    ->toArray(),
+            ];
+        }
+
+        $data = [
+            'meta' => [
+                'value_suffix' => $station['chart_options']['value_suffix'],
+                'timestamp' => $this->getUtcDate($station['config']['timestamp']),
+                'language' => $station['config']['language'],
+                'station' => $stationId
+            ],
+            'parameters' => $parameters
+        ];
 
         return $data;
     }

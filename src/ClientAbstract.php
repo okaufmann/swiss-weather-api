@@ -30,6 +30,13 @@ abstract class ClientAbstract
     const PARAMETER_PRESSURE_QNH = 'pressure-qnh';
     const PARAMETER_SNOW_NEW = 'snow-new';
 
+    /** forecast only */
+    const PARAMETER_RAINFALL = 'rainfall';
+    const PARAMETER_RAINFALL_VARIANCE = 'variance_range';
+    const PARAMETER_TEMPERATURE_VARIANCE = 'variance_rain';
+    const PARAMETER_WIND = 'wind';
+
+
     const PARAMETERS = [
         self::PARAMETER_TEMPERATURE,
         self::PARAMETER_TEMPERATURE_YEAR,

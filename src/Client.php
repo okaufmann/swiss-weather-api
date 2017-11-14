@@ -12,8 +12,7 @@ namespace Okaufmann\SwissMeteoApi;
 
 use Carbon\Carbon;
 use GuzzleHttp\Client as Http;
-use Spatie\Regex\MatchResult;
-use Spatie\Regex\Regex;
+use Log;
 
 class Client extends ClientAbstract
 {
@@ -25,7 +24,6 @@ class Client extends ClientAbstract
      */
     public $client;
 
-
     private function setupClient()
     {
         $client = new Http([
@@ -35,47 +33,24 @@ class Client extends ClientAbstract
         $this->client = $client;
     }
 
-    /**
-     * @param $stationId
-     * @param $station
-     * @return array
-     */
-    private function formatData($stationId, $station)
-    {
-        $parameters = [];
-        foreach ($station['series'] as $parameter) {
-            $parameters[] = [
-                'label' => $parameter['name'],
-                'value_suffix' => $station['chart_options']['value_suffix'],
-                'data' => collect($parameter['data'])
-                    ->map(function ($dataItem) {
-                        return [
-                            'date' => $this->getUtcDate($dataItem[0]),
-                            'value' => $dataItem[1]
-                        ];
-                    })
-                    ->toArray(),
-            ];
-        }
-
-        $data = [
-            'meta' => [
-                'value_suffix' => $station['chart_options']['value_suffix'],
-                'timestamp' => $this->getUtcDate($station['config']['timestamp']),
-                'language' => $station['config']['language'],
-                'station' => $stationId
-            ],
-            'parameters' => $parameters
-        ];
-
-        return $data;
-    }
 
     private function getUtcDate($timestamp)
     {
-        $timestamp = floatval($timestamp / 1000);
-        $date = Carbon::createFromTimestamp($timestamp, 'Europe/Zurich');
-        $date->setTimezone('UTC');
+
+        if (!$timestamp || $timestamp == 0) {
+            throw new \Exception('Invalid timestamp provided: '.$timestamp);
+        }
+
+        try {
+            $timestamp = doubleval($timestamp) / 1000;
+            $date = Carbon::createFromTimestamp($timestamp, 'Europe/Zurich');
+            $date->setTimezone('UTC');
+        } catch (\Exception $ex) {
+            Log::error('Error converting timestamp to datetime', ['timestamp' => $timestamp]);
+            dd($timestamp);
+            throw $ex;
+        }
+
 
         return $date;
     }
