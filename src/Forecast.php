@@ -49,10 +49,13 @@ trait Forecast
 
     private function getForecastData($postalCode, $parameterName, $lang)
     {
-        $postalCodePadded = $postalCode.'00';
+        if (strlen($postalCode) == 4) {
+            $postalCode = $postalCode.'00';
+        }
+
         $version = $this->getParametersAndVersionsForecast();
 
-        $data = $this->loadForecastData($version['version'], $lang, $postalCodePadded);
+        $data = $this->loadForecastData($version['version'], $lang, $postalCode);
         $forecast = $this->formatForecastData($data, $parameterName);
 
         return $forecast;
