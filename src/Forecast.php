@@ -88,13 +88,15 @@ trait Forecast
                 'forecast_from' => $minDate,
                 'forecast_to' => $maxDate,
                 'day' => $dayName,
-                $parameterName => $this->formatForecastValues(collect($forecastForParameter)),
+                'parameters' => [
+                    $parameterName => $this->formatForecastValues(collect($forecastForParameter)),
+                ]
             ];
 
             if ($parameterName == self::PARAMETER_TEMPERATURE) {
-                $dayData['temperature_variance'] = $this->formatForecastValues(collect($day[self::PARAMETER_TEMPERATURE_VARIANCE]), true);
+                $dayData['parameters']['temperature_variance'] = $this->formatForecastValues(collect($day[self::PARAMETER_TEMPERATURE_VARIANCE]), true);
             } else if ($parameterName == self::PARAMETER_RAINFALL) {
-                $dayData['rainfall_variance'] = $this->formatForecastValues(collect($day[self::PARAMETER_RAINFALL_VARIANCE]), true);
+                $dayData['parameters']['rainfall_variance'] = $this->formatForecastValues(collect($day[self::PARAMETER_RAINFALL_VARIANCE]), true);
             }
 
             return $dayData;
