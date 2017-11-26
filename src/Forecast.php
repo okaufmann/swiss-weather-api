@@ -147,7 +147,7 @@ trait Forecast
 
         return [
             'label' => $this->humanizeString($parameterName),
-            'parameter_name' => $parameterName,
+            'type' => $parameterName,
             'value_suffix' => $this->getForecastParameterSuffix($parameterName),
             'data' => $data
         ];
