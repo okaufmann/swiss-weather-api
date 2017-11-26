@@ -55,8 +55,9 @@ trait Forecast
 
         $version = $this->getParametersAndVersionsForecast();
 
+        $locationData = $this->loadLocationData($postalCode);
         $data = $this->loadForecastData($version['version'], $lang, $postalCode);
-        $forecast = $this->formatForecastData($data, $parameterName);
+        $forecast = $this->formatForecastData($data, $locationData, $parameterName);
 
         return $forecast;
     }
@@ -70,7 +71,16 @@ trait Forecast
         return $forecastData;
     }
 
-    private function formatForecastData($data, $parameterName)
+    private function loadLocationData($postalCode)
+    {
+        $url = 'etc/designs/meteoswiss/ajax/location/380000.json';
+
+        $locationData = $this->makeRequest($url, true);
+
+        return $locationData;
+    }
+
+    private function formatForecastData($data, $locationData, $parameterName)
     {
         // wind
         // temperature, variance_range
@@ -84,30 +94,44 @@ trait Forecast
 
             $forecastForParameter = $day[$parameterName];
 
+            $parameters = [];
+            $parameters[] = $this->formatForecastValues(collect($forecastForParameter), $parameterName);
+
+            if ($parameterName == self::PARAMETER_TEMPERATURE) {
+                $parameters[] = $this->formatForecastValues(collect($day[self::PARAMETER_TEMPERATURE_VARIANCE]), 'temperature_variance', true);
+            } else if ($parameterName == self::PARAMETER_RAINFALL) {
+                $parameters[] = $this->formatForecastValues(collect($day[self::PARAMETER_RAINFALL_VARIANCE]), 'rainfall_variance', true);
+            }
+
             $dayData = [
                 'forecast_from' => $minDate,
                 'forecast_to' => $maxDate,
                 'day' => $dayName,
-                'parameters' => [
-                    $parameterName => $this->formatForecastValues(collect($forecastForParameter)),
-                ]
+                'parameters' => $parameters
             ];
-
-            if ($parameterName == self::PARAMETER_TEMPERATURE) {
-                $dayData['parameters']['temperature_variance'] = $this->formatForecastValues(collect($day[self::PARAMETER_TEMPERATURE_VARIANCE]), true);
-            } else if ($parameterName == self::PARAMETER_RAINFALL) {
-                $dayData['parameters']['rainfall_variance'] = $this->formatForecastValues(collect($day[self::PARAMETER_RAINFALL_VARIANCE]), true);
-            }
 
             return $dayData;
         });
 
-        return $days;
+        $location = [
+            'city_name' => $locationData['city_name'],
+            'city_postal_code' => intval(substr($locationData['location_id'], 0, 4)),
+            'location_id' => $locationData['location_id'],
+            'station_id' => $locationData['station_id'],
+            'webcam_id' => $locationData['webcam_id']
+        ];
+
+        $data = [
+            'meta' => $location,
+            'forecast' => $days
+        ];
+
+        return $data;
     }
 
-    private function formatForecastValues(Collection $values, $variance = false)
+    private function formatForecastValues(Collection $values, $parameterName, $variance = false)
     {
-        return $values->map(function ($value) use ($variance) {
+        $data = $values->map(function ($value) use ($variance) {
             $dateTime = $this->getUtcDate($value[0]);
             $valueData = [
                 'datetime' => $dateTime,
@@ -120,6 +144,30 @@ trait Forecast
 
             return $valueData;
         });
+
+        return [
+            'label' => $this->humanizeString($parameterName),
+            'parameter_name' => $parameterName,
+            'value_suffix' => $this->getForecastParameterSuffix($parameterName),
+            'data' => $data
+        ];
+    }
+
+    private function getForecastParameterSuffix($parameterName)
+    {
+        if (starts_with($parameterName, 'temperature')) {
+            return 'C°';
+        }
+
+        if (starts_with($parameterName, 'wind')) {
+            return 'km/h';
+        }
+
+        if (starts_with($parameterName, 'rainfall')) {
+            return 'mm/h';
+        }
+
+        return '';
     }
 
     /**

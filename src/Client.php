@@ -79,11 +79,22 @@ class Client extends ClientAbstract
             $date->setTimezone('UTC');
         } catch (\Exception $ex) {
             Log::error('Error converting timestamp to datetime', ['timestamp' => $timestamp]);
-            dd($timestamp);
             throw $ex;
         }
 
-
         return $date;
+    }
+
+    private function humanizeString($input)
+    {
+
+        $str = trim(strtolower($input));
+        $str = preg_replace('/[^a-z0-9\s+]/', ' ', $str);
+        $str = preg_replace('/\s+/', ' ', $str);
+        $str = explode(' ', $str);
+
+        $str = array_map('ucwords', $str);
+
+        return implode(' ', $str);
     }
 }
