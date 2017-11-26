@@ -32,8 +32,8 @@ abstract class ClientAbstract
 
     /** forecast only */
     const PARAMETER_RAINFALL = 'rainfall';
-    const PARAMETER_RAINFALL_VARIANCE = 'variance_range';
-    const PARAMETER_TEMPERATURE_VARIANCE = 'variance_rain';
+    const PARAMETER_RAINFALL_VARIANCE = 'variance_rain';
+    const PARAMETER_TEMPERATURE_VARIANCE = 'variance_range';
     const PARAMETER_WIND = 'wind';
 
 
