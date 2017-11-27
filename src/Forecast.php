@@ -49,31 +49,32 @@ trait Forecast
 
     private function getForecastData($postalCode, $parameterName, $lang)
     {
+        $locationId = $postalCode;
         if (strlen($postalCode) == 4) {
-            $postalCode = $postalCode.'00';
+            $locationId = $postalCode.'00';
         }
 
         $version = $this->getParametersAndVersionsForecast();
 
-        $locationData = $this->loadLocationData($postalCode);
-        $data = $this->loadForecastData($version['version'], $lang, $postalCode);
+        $locationData = $this->loadLocationData($locationId);
+        $data = $this->loadForecastData($version['version'], $lang, $locationId);
         $forecast = $this->formatForecastData($data, $locationData, $parameterName);
 
         return $forecast;
     }
 
-    private function loadForecastData($version, $lang, $postalCode)
+    private function loadForecastData($version, $lang, $locationId)
     {
-        $url = 'product/output/forecast-chart/'.$version.'/'.$lang.'/'.$postalCode.'.json';
+        $url = 'product/output/forecast-chart/'.$version.'/'.$lang.'/'.$locationId.'.json';
 
         $forecastData = $this->makeRequest($url, true);
 
         return $forecastData;
     }
 
-    private function loadLocationData($postalCode)
+    private function loadLocationData($locationId)
     {
-        $url = 'etc/designs/meteoswiss/ajax/location/380000.json';
+        $url = 'etc/designs/meteoswiss/ajax/location/'.$locationId.'.json';
 
         $locationData = $this->makeRequest($url, true);
 
