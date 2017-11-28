@@ -16,11 +16,6 @@ use Spatie\Regex\Regex;
 trait MeasuredValues
 {
 
-    /**
-     * @var array
-     */
-    public $parameterVersionsMeasuredValues;
-
     public function __construct()
     {
         $this->setupClient();
@@ -198,30 +193,25 @@ trait MeasuredValues
      */
     private function getParametersAndVersions()
     {
-        if (!$this->parameterVersionsMeasuredValues) {
+        $url = 'home/wetter/messwerte/messwerte-an-stationen.html';
+        $html = $this->makeRequest($url);
 
-            $url = 'home/wetter/messwerte/messwerte-an-stationen.html';
-            $html = $this->makeRequest($url);
+        $regex = '/product\/output\/measured-values-v2\/([a-z-]*)\/(version__[0-9]{6,8}_[0-9]{2,4})\/(de)/';
+        $matches = Regex::matchAll($regex, $html);
 
-            $regex = '/product\/output\/measured-values-v2\/([a-z-]*)\/(version__[0-9]{6,8}_[0-9]{2,4})\/(de)/';
-            $matches = Regex::matchAll($regex, $html);
+        $versions = collect($matches->results())
+            ->map(function (MatchResult $match) {
+                return [
+                    'parameter-name' => $match->group(1),
+                    'version' => $match->group(2),
+                    'lang' => $match->group(3)
+                ];
+            })
+            ->unique('parameter-name');
 
-            $versions = collect($matches->results())
-                ->map(function (MatchResult $match) {
-                    return [
-                        'parameter-name' => $match->group(1),
-                        'version' => $match->group(2),
-                        'lang' => $match->group(3)
-                    ];
-                })
-                ->unique('parameter-name');
+        $parameterVersions = $versions;
 
-            $parameterVersions = $versions;
-
-            $this->parameterVersionsMeasuredValues = collect($parameterVersions);
-        }
-
-        return $this->parameterVersionsMeasuredValues;
+        return collect($parameterVersions);
     }
 
     /**

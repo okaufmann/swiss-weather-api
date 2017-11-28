@@ -16,12 +16,6 @@ use Spatie\Regex\Regex;
 
 trait Forecast
 {
-
-    /**
-     * @var array
-     */
-    public $parameterVersionForecast;
-
     public function getTemperatureForecast($postalCode, $lang = 'en')
     {
         $parameterName = self::PARAMETER_TEMPERATURE;
@@ -176,7 +170,6 @@ trait Forecast
      */
     private function getParametersAndVersionsForecast()
     {
-
         $url = 'home.html';
         $html = $this->makeRequest($url);
 
