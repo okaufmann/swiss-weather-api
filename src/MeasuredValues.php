@@ -23,7 +23,6 @@ trait MeasuredValues
 
     public function getTemperature($stationId, $lang = 'en')
     {
-        $this->getParametersAndVersions();
         $parameterName = self::PARAMETER_TEMPERATURE;
         $version = $this->getParameterVersion($parameterName);
         $station = $this->getStation($version, $parameterName, $stationId, $lang);
@@ -33,7 +32,6 @@ trait MeasuredValues
 
     public function getSunshinePerHour($stationId, $lang = 'en')
     {
-        $this->getParametersAndVersions();
         $parameterName = self::PARAMETER_SUNSHINE;
         $version = $this->getParameterVersion($parameterName);
         $station = $this->getStation($version, $parameterName, $stationId, $lang);
@@ -43,7 +41,6 @@ trait MeasuredValues
 
     public function getSunshinePerDay($stationId, $lang = 'en')
     {
-        $this->getParametersAndVersions();
         $parameterName = self::PARAMETER_SUNSHINE;
         $version = $this->getParameterVersion($parameterName);
         $station = $this->getStation($version, $parameterName, $stationId, $lang);
@@ -53,7 +50,6 @@ trait MeasuredValues
 
     public function getPrecipitationPerHour($stationId, $lang = 'en')
     {
-        $this->getParametersAndVersions();
         $parameterName = self::PARAMETER_PRECIPITATION;
         $version = $this->getParameterVersion($parameterName);
         $station = $this->getStation($version, $parameterName, $stationId, $lang);
@@ -63,7 +59,6 @@ trait MeasuredValues
 
     public function getPrecipitationPerDay($stationId, $lang = 'en')
     {
-        $this->getParametersAndVersions();
         $parameterName = self::PARAMETER_PRECIPITATION_YEAR;
         $version = $this->getParameterVersion($parameterName);
         $station = $this->getStation($version, $parameterName, $stationId, $lang);
@@ -73,7 +68,6 @@ trait MeasuredValues
 
     public function getWindCombination($stationId, $lang = 'en')
     {
-        $this->getParametersAndVersions();
         $parameterName = self::PARAMETER_WIND_COMBINATION;
         $version = $this->getParameterVersion($parameterName);
         $station = $this->getStation($version, $parameterName, $stationId, $lang);
@@ -83,7 +77,6 @@ trait MeasuredValues
 
     public function getWindSpeed($stationId, $lang = 'en')
     {
-        $this->getParametersAndVersions();
         $parameterName = self::PARAMETER_WIND_SPEED;
         $version = $this->getParameterVersion($parameterName);
         $station = $this->getStation($version, $parameterName, $stationId, $lang);
@@ -93,7 +86,6 @@ trait MeasuredValues
 
     public function getWindDirection($stationId, $lang = 'en')
     {
-        $this->getParametersAndVersions();
         $parameterName = self::PARAMETER_WIND_DIRECTION;
         $version = $this->getParameterVersion($parameterName);
         $station = $this->getStation($version, $parameterName, $stationId, $lang);
@@ -103,7 +95,6 @@ trait MeasuredValues
 
     public function getAirPressure($stationId, $lang = 'en')
     {
-        $this->getParametersAndVersions();
         $parameterName = self::PARAMETER_PRESSURE_QFE;
         $version = $this->getParameterVersion($parameterName);
         $station = $this->getStation($version, $parameterName, $stationId, $lang);
@@ -113,7 +104,6 @@ trait MeasuredValues
 
     public function getAirPressureSeaLevel($stationId, $lang = 'en')
     {
-        $this->getParametersAndVersions();
         $parameterName = self::PARAMETER_PRESSURE_QFF;
         $version = $this->getParameterVersion($parameterName);
         $station = $this->getStation($version, $parameterName, $stationId, $lang);
@@ -123,7 +113,6 @@ trait MeasuredValues
 
     public function getAirPressureStandardAtmosphere($stationId, $lang = 'en')
     {
-        $this->getParametersAndVersions();
         $parameterName = self::PARAMETER_PRESSURE_QNH;
         $version = $this->getParameterVersion($parameterName);
         $station = $this->getStation($version, $parameterName, $stationId, $lang);
@@ -133,7 +122,6 @@ trait MeasuredValues
 
     public function getHumidity($stationId, $lang = 'en')
     {
-        $this->getParametersAndVersions();
         $parameterName = self::PARAMETER_HUMIDITY;
         $version = $this->getParameterVersion($parameterName);
         $station = $this->getStation($version, $parameterName, $stationId, $lang);
@@ -143,7 +131,6 @@ trait MeasuredValues
 
     public function getSnow($stationId, $lang = 'en')
     {
-        $this->getParametersAndVersions();
         $parameterName = self::PARAMETER_SNOW_TOTAL;
         $version = $this->getParameterVersion($parameterName);
         $station = $this->getStation($version, $parameterName, $stationId, $lang);
@@ -153,7 +140,6 @@ trait MeasuredValues
 
     public function getSnowNew($stationId, $lang = 'en')
     {
-        $this->getParametersAndVersions();
         $parameterName = self::PARAMETER_SNOW_NEW;
         $version = $this->getParameterVersion($parameterName);
         $station = $this->getStation($version, $parameterName, $stationId, $lang);
@@ -163,7 +149,6 @@ trait MeasuredValues
 
     public function getFoehn($stationId, $lang = 'en')
     {
-        $this->getParametersAndVersions();
         $parameterName = self::PARAMETER_FOEHN;
         $version = $this->getParameterVersion($parameterName);
         $station = $this->getStation($version, $parameterName, $stationId, $lang);
@@ -222,11 +207,8 @@ trait MeasuredValues
      */
     private function getParameterVersion($parameeterName)
     {
-        if (!$this->parameterVersionsMeasuredValues) {
-            $this->getParametersAndVersions();
-        }
-
-        $parameterVersion = $this->parameterVersionsMeasuredValues->first(function ($item) use ($parameeterName) {
+        $versions = $this->getParametersAndVersions();
+        $parameterVersion = $versions->first(function ($item) use ($parameeterName) {
             return $item['parameter-name'] == $parameeterName;
         });
 
