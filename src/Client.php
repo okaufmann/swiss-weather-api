@@ -16,6 +16,7 @@ use GuzzleHttp\HandlerStack;
 use Kevinrob\GuzzleCache\CacheMiddleware;
 use Kevinrob\GuzzleCache\Storage\LaravelCacheStorage;
 use Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy;
+use Kevinrob\GuzzleCache\Strategy\PublicCacheStrategy;
 use Log;
 use Cache;
 
@@ -28,6 +29,9 @@ class Client extends ClientAbstract
      * @var Http
      */
     public $client;
+
+    private $userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36';
+    private $baseUri = 'http://www.meteoschweiz.admin.ch/';
 
     private function setupClient()
     {
@@ -47,7 +51,10 @@ class Client extends ClientAbstract
 
         $client = new Http([
             'handler' => $stack,
-            'base_uri' => 'http://www.meteoschweiz.admin.ch/'
+            'base_uri' => $this->baseUri,
+            'headers' => [
+                'User-Agent' => $this->userAgent
+            ]
         ]);
 
         $this->client = $client;
