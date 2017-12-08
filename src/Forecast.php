@@ -10,7 +10,6 @@
 
 namespace Okaufmann\SwissMeteoApi;
 
-use Illuminate\Support\Collection;
 use Spatie\Regex\MatchResult;
 use Spatie\Regex\Regex;
 
@@ -90,12 +89,12 @@ trait Forecast
             $forecastForParameter = $day[$parameterName];
 
             $parameters = [];
-            $parameters[] = $this->formatForecastValues(collect($forecastForParameter), $parameterName);
+            $parameters[] = $this->formatParameterValues(collect($forecastForParameter), $parameterName);
 
             if ($parameterName == self::PARAMETER_TEMPERATURE) {
-                $parameters[] = $this->formatForecastValues(collect($day[self::PARAMETER_TEMPERATURE_VARIANCE]), 'temperature_variance', true);
+                $parameters[] = $this->formatParameterValues(collect($day[self::PARAMETER_TEMPERATURE_VARIANCE]), 'temperature_variance', true);
             } else if ($parameterName == self::PARAMETER_RAINFALL) {
-                $parameters[] = $this->formatForecastValues(collect($day[self::PARAMETER_RAINFALL_VARIANCE]), 'rainfall_variance', true);
+                $parameters[] = $this->formatParameterValues(collect($day[self::PARAMETER_RAINFALL_VARIANCE]), 'rainfall_variance', true);
             }
 
             $dayData = [
@@ -122,47 +121,6 @@ trait Forecast
         ];
 
         return $data;
-    }
-
-    private function formatForecastValues(Collection $values, $parameterName, $variance = false)
-    {
-        $data = $values->map(function ($value) use ($variance) {
-            $dateTime = $this->getUtcDate($value[0]);
-            $valueData = [
-                'datetime' => $dateTime,
-                'value' => doubleval($value[1]),
-            ];
-
-            if ($variance) {
-                $valueData['max'] = $value[2];
-            }
-
-            return $valueData;
-        });
-
-        return [
-            'label' => $this->humanizeString($parameterName),
-            'type' => $parameterName,
-            'value_suffix' => $this->getForecastParameterSuffix($parameterName),
-            'data' => $data
-        ];
-    }
-
-    private function getForecastParameterSuffix($parameterName)
-    {
-        if (starts_with($parameterName, 'temperature')) {
-            return 'C°';
-        }
-
-        if (starts_with($parameterName, 'wind')) {
-            return 'km/h';
-        }
-
-        if (starts_with($parameterName, 'rainfall')) {
-            return 'mm/h';
-        }
-
-        return '';
     }
 
     /**

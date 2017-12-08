@@ -10,15 +10,14 @@
 
 namespace Okaufmann\SwissMeteoApi;
 
+use Cache;
 use Carbon\Carbon;
 use GuzzleHttp\Client as Http;
 use GuzzleHttp\HandlerStack;
 use Kevinrob\GuzzleCache\CacheMiddleware;
 use Kevinrob\GuzzleCache\Storage\LaravelCacheStorage;
 use Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy;
-use Kevinrob\GuzzleCache\Strategy\PublicCacheStrategy;
 use Log;
-use Cache;
 
 class Client extends ClientAbstract
 {
@@ -103,5 +102,50 @@ class Client extends ClientAbstract
         $str = array_map('ucwords', $str);
 
         return implode(' ', $str);
+    }
+
+    private function getParameterSuffix($parameterName)
+    {
+        if (starts_with($parameterName, 'temperature')) {
+            return 'C°';
+        }
+
+        if (starts_with($parameterName, 'wind')) {
+            return 'km/h';
+        }
+
+        if (starts_with($parameterName, 'rainfall')) {
+            return 'mm/h';
+        }
+
+        return '';
+    }
+
+    private function formatParameterValues($values, $parameterName, $variance = false)
+    {
+        if (is_array($values)) {
+            $values = collect($values);
+        }
+
+        $data = $values->map(function ($value) use ($variance) {
+            $dateTime = $this->getUtcDate($value[0]);
+            $valueData = [
+                'datetime' => $dateTime,
+                'value' => doubleval($value[1]),
+            ];
+
+            if ($variance) {
+                $valueData['max'] = $value[2];
+            }
+
+            return $valueData;
+        });
+
+        return [
+            'label' => $this->humanizeString($parameterName),
+            'type' => $parameterName,
+            'value_suffix' => $this->getParameterSuffix($parameterName),
+            'data' => $data
+        ];
     }
 }
