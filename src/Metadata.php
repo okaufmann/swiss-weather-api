@@ -24,7 +24,7 @@ trait Metadata
     public function search($queryText)
     {
         $normalize = $this->removeAccents($queryText);
-        $normalize = Regex::replace("/[^A-Za-z0-9\s]", '', $normalize);
+        $normalize = Regex::replace("/[^A-Za-z0-9\s]/", '', $normalize);
         $normalize = strtolower($normalize);
         $normalize = substr($normalize, 0, 2);
 
@@ -42,7 +42,7 @@ trait Metadata
                 'city_name' => $cityName,
             ];
         })->filter(function ($m) use ($queryText) {
-            return str_contains($m['cityName'], $queryText) || str_contains($m['postalCode'], $queryText);
+            return str_contains($m['city_name'], $queryText) || str_contains($m['postal_code'], $queryText);
         });
 
         return $result;
