@@ -42,7 +42,7 @@ trait Metadata
                 'city_name' => $cityName,
             ];
         })->filter(function ($m) use ($cityNameOrPostalCode) {
-            return str_contains($m['city_name'], $cityNameOrPostalCode) || str_contains($m['postal_code'], $cityNameOrPostalCode);
+            return str_contains(strtolower($m['city_name']), strtolower($cityNameOrPostalCode)) || str_contains($m['postal_code'], $cityNameOrPostalCode);
         });
 
         return $result;
