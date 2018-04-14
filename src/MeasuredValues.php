@@ -15,12 +15,6 @@ use Spatie\Regex\Regex;
 
 trait MeasuredValues
 {
-
-    public function __construct()
-    {
-        $this->setupClient();
-    }
-
     /**
      * Returns the measured temperatures of the last 24 hours in ten minute steps
      *
