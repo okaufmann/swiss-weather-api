@@ -16,14 +16,14 @@ use Spatie\Regex\Regex;
 trait Metadata
 {
     /**
-     * Searches metadata for a given search term
+     * Searches metadata for a given search term (can be city name or postal code)
      *
-     * @param $queryText
+     * @param $cityNameOrPostalCode
      * @return array
      */
-    public function search($queryText)
+    public function searchLocations($cityNameOrPostalCode)
     {
-        $normalize = $this->removeAccents($queryText);
+        $normalize = $this->removeAccents($cityNameOrPostalCode);
         $normalize = Regex::replace("/[^A-Za-z0-9\s]/", '', $normalize)->result();
         $normalize = strtolower($normalize);
         $normalize = substr($normalize, 0, 2);
@@ -41,8 +41,8 @@ trait Metadata
                 'postal_code' => $postalCode,
                 'city_name' => $cityName,
             ];
-        })->filter(function ($m) use ($queryText) {
-            return str_contains($m['city_name'], $queryText) || str_contains($m['postal_code'], $queryText);
+        })->filter(function ($m) use ($cityNameOrPostalCode) {
+            return str_contains($m['city_name'], $cityNameOrPostalCode) || str_contains($m['postal_code'], $cityNameOrPostalCode);
         });
 
         return $result;
