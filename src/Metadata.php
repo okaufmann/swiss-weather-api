@@ -24,7 +24,7 @@ trait Metadata
     public function search($queryText)
     {
         $normalize = $this->removeAccents($queryText);
-        $normalize = Regex::replace("/[^A-Za-z0-9\s]/", '', $normalize);
+        $normalize = Regex::replace("/[^A-Za-z0-9\s]/", '', $normalize)->result();
         $normalize = strtolower($normalize);
         $normalize = substr($normalize, 0, 2);
 
