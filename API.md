@@ -33,7 +33,7 @@ Startseite: http://www.meteoschweiz.admin.ch/home/wetter/messwerte/messwerte-an-
 - Föhn
 
 ## Temperatur
-Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values-v2/temperature/version__20170607_1504/de/overview.json`
+Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values/temperature/version__20170607_1504/de/overview.json`
 
 ```json
 {
@@ -61,7 +61,7 @@ Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values-v2/te
 ```
 
 ## Sonnenschein
-Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values-v2/sunshine/version__20170607_1504/de/overview.json`
+Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values/sunshine/version__20170607_1504/de/overview.json`
 
 ```json
 {
@@ -91,7 +91,7 @@ Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values-v2/su
 ## Niederschlag
 
 ### Alle Stationen
-Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values-v2/precipitation/version__20170607_1459/de/overview.json`
+Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values/precipitation/version__20170607_1459/de/overview.json`
 
 ```json
 {
@@ -120,7 +120,7 @@ Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values-v2/pr
 
 ### Einzelne Station
 
-Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values-v2/precipitation/version__20170607_1528/de/{STATION ID}.json`
+Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values/precipitation/version__20170607_1528/de/{STATION ID}.json`
 
 ```json
 {
@@ -166,7 +166,7 @@ Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values-v2/pr
 
 ## Wind
 
-Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values-v2/wind-combination/version__20170607_1503/de/overview.json`
+Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values/wind-combination/version__20170607_1503/de/overview.json`
 
 ```json
 {
@@ -202,7 +202,7 @@ Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values-v2/wi
 **TODO**
 
 ## Luftfeutchtigkeit
-Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values-v2/humidity/version__20170607_1504/de/overview.json`
+Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values/humidity/version__20170607_1504/de/overview.json`
 
 ```json
 {
@@ -229,7 +229,7 @@ Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values-v2/hu
 ```
 
 ## Schnee Total
-Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values-v2/snow-total/version__20170607_1154/de/overview.json`
+Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values/snow-total/version__20170607_1154/de/overview.json`
 
 ```json
 {
@@ -256,7 +256,7 @@ Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values-v2/sn
 ```
 
 ## Schnee Neu
-Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values-v2/snow-new/version__20170607_1154/de/overview.json`
+Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values/snow-new/version__20170607_1154/de/overview.json`
 
 ```json
 {
@@ -283,7 +283,7 @@ Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values-v2/sn
 ```
 
 ## Föhn
-Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values-v2/foehn/version__20170607_1459/de/overview.json`
+Endpoint: `http://www.meteoschweiz.admin.ch/product/output/measured-values/foehn/version__20170607_1459/de/overview.json`
 
 ```json
 {

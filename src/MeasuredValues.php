@@ -190,7 +190,7 @@ trait MeasuredValues
     public function getStationsByParameter($parameterName, $lang = 'en')
     {
         $version = $this->getParameterVersion($parameterName);
-        $url = 'product/output/measured-values-v2/'.$parameterName.'/'.$version.'/'.$lang.'/overview.json';
+        $url = 'product/output/measured-values/'.$parameterName.'/'.$version.'/'.$lang.'/overview.json';
 
         $stations = $this->makeRequest($url, true);
 
@@ -226,7 +226,7 @@ trait MeasuredValues
 
         $html = $this->makeRequest($url);
 
-        $regex = '/product\/output\/measured-values-v2\/([a-z-]*)\/(version__[0-9]{6,8}_[0-9]{2,4})\/(de)/';
+        $regex = '/product\/output\/measured-values\/([a-z-]*)\/(version__[0-9]{6,8}_[0-9]{2,4})\/(de)/';
         $matches = Regex::matchAll($regex, $html);
 
         $versions = collect($matches->results())
@@ -263,7 +263,7 @@ trait MeasuredValues
 
     private function getStationDataWithVersion($version, $parameterName, $stationId, $lang)
     {
-        $url = 'product/output/measured-values-v2/'.$parameterName.'/'.$version.'/'.$lang.'/'.$stationId.'.json';
+        $url = 'product/output/measured-values/'.$parameterName.'/'.$version.'/'.$lang.'/'.$stationId.'.json';
 
         $stationData = $this->makeRequest($url, true);
 
