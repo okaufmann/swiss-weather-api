@@ -91,6 +91,7 @@ trait Forecast
             $parameters = [];
             $parameters[] = $this->formatParameterValues(collect($forecastForParameter), $parameterName);
 
+            // load additional parameter values for certain parameters
             if ($parameterName == self::PARAMETER_TEMPERATURE) {
                 $parameters[] = $this->formatParameterValues(collect($day[self::PARAMETER_TEMPERATURE_VARIANCE]), 'temperature_variance', true);
             } else if ($parameterName == self::PARAMETER_RAINFALL) {
