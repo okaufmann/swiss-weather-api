@@ -33,7 +33,7 @@ trait MeasuredValues
         $values = $stationData[0][$parameterName];
         $parameterData = $this->formatParameterValues($values, $parameterName);
 
-        $data = $this->formatData($stationId, $stationData, $stationMetadata, $parameterName, $parameterData);
+        $data = $this->formatDataByParameterData($stationId, $stationMetadata, $parameterData);
 
         return $data;
     }
@@ -278,34 +278,46 @@ trait MeasuredValues
     }
 
     /**
+     *
      * @param $stationId
-     * @param $stationData
      * @param $stationMetadata
-     * @param null $parameterName
-     * @param null $parameterData
+     * @param $stationData
      * @return array
      */
-    private function formatData($stationId, $stationData, $stationMetadata, $parameterName = null, $parameterData = null)
+    private function formatDataByStationData($stationId, $stationMetadata, $stationData)
     {
         $parameters = [];
-        if ($parameterName && $parameterData) {
-            $parameters[] = $parameterData;
-        } else {
-            foreach ($stationData['series'] as $parameter) {
-                $parameters[] = [
-                    'label' => $parameter['name'],
-                    'value_suffix' => $stationData['chart_options']['value_suffix'],
-                    'data' => collect($parameter['data'])
-                        ->map(function ($dataItem) {
-                            return [
-                                'datetime' => $this->getUtcDate($dataItem[0]),
-                                'value' => $dataItem[1]
-                            ];
-                        })
-                        ->toArray(),
-                ];
-            }
+        foreach ($stationData['series'] as $parameter) {
+            $parameters[] = [
+                'label' => $parameter['name'],
+                'value_suffix' => $stationData['chart_options']['value_suffix'],
+                'data' => collect($parameter['data'])
+                    ->map(function ($dataItem) {
+                        return [
+                            'datetime' => $this->getUtcDate($dataItem[0]),
+                            'value' => $dataItem[1]
+                        ];
+                    })
+                    ->toArray(),
+            ];
         }
+
+        $data = $this->buildStationMetadata($stationId, $stationMetadata);
+
+        $data['parameters'] = $parameters;
+
+        return $data;
+    }
+
+    /**
+     * @param $stationId
+     * @param $stationMetadata
+     * @param $parameterData
+     * @return array
+     */
+    private function formatDataByParameterData($stationId, $stationMetadata, $parameterData)
+    {
+        $parameters[] = $parameterData;
 
         $data = $this->buildStationMetadata($stationId, $stationMetadata);
 
@@ -324,7 +336,7 @@ trait MeasuredValues
     {
         $stationData = $this->getStationData($parameterName, $stationId, $lang);
         $stationMetadata = $this->getStationByParameter($parameterName, $stationId);
-        $data = $this->formatData($stationId, $stationData, $stationMetadata);
+        $data = $this->formatDataByStationData($stationId, $stationMetadata, $stationData);
         return $data;
     }
 
