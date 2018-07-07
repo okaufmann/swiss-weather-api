@@ -14,6 +14,7 @@ use Cache;
 use Carbon\Carbon;
 use GuzzleHttp\Client as Http;
 use GuzzleHttp\HandlerStack;
+use Illuminate\Support\Collection;
 use Kevinrob\GuzzleCache\CacheMiddleware;
 use Kevinrob\GuzzleCache\Storage\LaravelCacheStorage;
 use Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy;
@@ -129,7 +130,11 @@ class Client extends ClientAbstract
 
     private function formatParameterValues($values, $parameterName, $variance = false)
     {
-        if (is_array($values)) {
+        if(!$values) {
+            return [];
+        }
+
+        if (!$values instanceof Collection) {
             $values = collect($values);
         }
 
